@@ -1,4 +1,4 @@
-package com.healthyfood
+package com.HealthyIndia
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

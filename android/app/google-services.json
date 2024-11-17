@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "164174130595",
+    "project_id": "healthyindia-275c5",
+    "storage_bucket": "healthyindia-275c5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164174130595:android:15b142b222c83f74d63e16",
+        "android_client_info": {
+          "package_name": "com.HealthyIndia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "164174130595-2ise64bngs60bs48ju0r0lppdsa5arhr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.HealthyIndia",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "164174130595-cc35prt58fv5us5jgfmdk520r6scicng.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3AgOd8VghbEiH77FXb5SWbN9XOYa3Vh4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "164174130595-cc35prt58fv5us5jgfmdk520r6scicng.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
