@@ -268,14 +268,14 @@ const App = () => {
           />
         </View>
 
-        <View style={styles.Menutitlestyle}>
+        <View style={styles.container}>
       <FlatList
         data={MenuItems}
         keyExtractor={item => item.id}
         showsHorizontalScrollIndicator={false}
         horizontal={true}
         renderItem={({ item }) => (
-          <View style={{ padding: 10 }}>
+          <View style={{ padding: 10, }}>
             <Text
               onPress={() => handlePress(item.id)}
               style={{
@@ -372,4 +372,5 @@ const styles = StyleSheet.create({
     marginTop: height * 0.02,
     height: height * 0.5,
   },
+  
 });

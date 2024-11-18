@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
   flatListContainer: {
     paddingHorizontal: width * 0.05,
     paddingVertical: height * 0.02,
+ flex: 1, backgroundColor: '#fff',
   },
   Productbgc: {
     height: height * 0.25,
@@ -77,6 +78,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,
+    flex: 1,
   },
   productImage: {
     height: height * 0.15,

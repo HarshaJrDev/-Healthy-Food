@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, Dimensions, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../Redux/ProductSlice'; // Import the action
+import LottieView from 'lottie-react-native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -12,7 +13,7 @@ const ProductDetail = ({ route }) => {
   // Function to handle adding to cart
   const handleAddToCart = () => {
     dispatch(addToCart(product)); // Dispatch action with product payload
-    Alert.alert('Success', `${product.title} has been added to your cart!`);
+    <LottieView style={styles.lottieAnimation} source={require('../assets/Images/Empty_Cart.json')} autoPlay loop />
 
   };
 
@@ -72,4 +73,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
   },
+  lottieAnimation: {
+    width: width * 0.6,
+    height: height * 0.4,
+  }
 });

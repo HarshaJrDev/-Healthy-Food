@@ -105,8 +105,5 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     justifyContent: 'space-between',
     alignItems: 'center',
-
-   
-
   },
 });
