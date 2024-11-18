@@ -1,14 +1,29 @@
 import React from 'react';
-import { StyleSheet, Text, View, Dimensions, FlatList, Image, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-const { width, height } = Dimensions.get('window');
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+const {width, height} = Dimensions.get('window');
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 
 const Salad_Spouts = () => {
+
+  const user = auth().currentUser;
+const uid = user.uid;
+console.log(uid);
   const navigation = useNavigation();
   const addposter = [
     {
       id: 1,
+      userid:uid,
       title: 'Delicious Food',
       image: require('../../Healthyfood/assets/Images/Poster/Spouts.jpg'),
       price: 25,
@@ -16,6 +31,7 @@ const Salad_Spouts = () => {
     },
     {
       id: 2,
+      userid:uid,
       title: 'Healthy Snacks',
       image: require('../../Healthyfood/assets/Images/Poster/Spouts.jpg'),
       price: 15,
@@ -23,6 +39,7 @@ const Salad_Spouts = () => {
     },
     {
       id: 3,
+      userid:uid,
       title: 'Nutritious Salad',
       image: require('../../Healthyfood/assets/Images/Poster/Spouts.jpg'),
       price: 20,
@@ -30,6 +47,7 @@ const Salad_Spouts = () => {
     },
     {
       id: 4,
+      userid:uid,
       title: 'Fresh Sprouts Bowl',
       image: require('../../Healthyfood/assets/Images/Poster/Spouts.jpg'),
       price: 18,
@@ -38,19 +56,24 @@ const Salad_Spouts = () => {
   ];
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff', marginTop: height * 0.02 }}>
+    <View style={{flex: 1, backgroundColor: '#fff'}}>
       <FlatList
         data={addposter}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={item => item.id.toString()}
         numColumns={2}
         contentContainerStyle={styles.flatListContainer}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <TouchableOpacity
-            style={styles.Productbgc}
-            onPress={() => navigation.navigate('ProductDetail', { product: item })}
-          >
+            style={styles.card}
+            onPress={() =>
+              navigation.navigate('ProductDetail', {product: item})
+            }>
             <Image source={item.image} style={styles.productImage} />
-            <Text style={styles.productTitle}>{item.title}</Text>
+            <View style={styles.cardContent}>
+              <Text style={styles.productTitle}>{item.title}</Text>
+              <Text style={styles.productDescription}>{item.description}</Text>
+              <Text style={styles.productPrice}>₹{item.price}</Text>
+            </View>
           </TouchableOpacity>
         )}
       />
@@ -62,34 +85,43 @@ export default Salad_Spouts;
 
 const styles = StyleSheet.create({
   flatListContainer: {
-    paddingHorizontal: width * 0.05,
+
     paddingVertical: height * 0.02,
- flex: 1, backgroundColor: '#fff',
   },
-  Productbgc: {
-    height: height * 0.25,
+  card: {
+    height: height * 0.32,
     width: width * 0.45,
-    backgroundColor: '#D6D6D6',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#fff',
     margin: width * 0.025,
     borderRadius: height * 0.02,
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,
-    flex: 1,
+    overflow: 'hidden',
   },
   productImage: {
-    height: height * 0.15,
-    width: width * 0.4,
-    borderRadius: height * 0.01,
-    marginBottom: height * 0.01,
+    height: '60%',
+    width: '100%',
+    resizeMode: 'cover',
+  },
+  cardContent: {
+    padding: width * 0.03,
   },
   productTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    textAlign: 'center',
+    fontSize: 14,
+    fontWeight: 'bold',
     color: '#333',
+    marginBottom: height * 0.005,
+  },
+  productDescription: {
+    fontSize: 12,
+    color: '#555',
+    marginBottom: height * 0.005,
+  },
+  productPrice: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#e91e63',
   },
 });

@@ -15,13 +15,6 @@ import Nuts_Laddu from '../Components/Nuts_Laddu';
 
 const { width, height } = Dimensions.get('window');
 
-
-
-
-
-
-
-
 const Menutitle = () => {
   const [isSelected, setIsSelected] = useState('1');
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,11 +9,12 @@ import {
   FlatList,
   TextInput,
   ScrollView,
-  PermissionsAndroid, Platform
+  PermissionsAndroid,
+  Platform,
 } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
 import Salad_Spouts from '../Components/Salad_Spouts';
@@ -24,23 +25,18 @@ import Nuts_Laddu from '../Components/Nuts_Laddu';
 const Drawer = createDrawerNavigator();
 import Geolocation from '@react-native-community/geolocation';
 
-
 const {width, height} = Dimensions.get('window');
-
-// Define the TopTab Navigator outside the component
-
-// Static Data
 const addposter = [
   {
     id: 1,
     title: 'Delicious Food',
-    image: require('../../Healthyfood/assets/Images/Poster/Spouts.jpg'),
+    image: require('../../Healthyfood/assets/Images/Banner1.jpg'),
     price: 25,
   },
   {
     id: 2,
     title: 'Healthy Snacks',
-    image: require('../../Healthyfood/assets/Images/Poster/Spouts.jpg'),
+    image: require('../../Healthyfood/assets/Images/Banner2.jpg'),
     price: 15,
   },
   {
@@ -56,21 +52,20 @@ const App = () => {
   const [address, setAddress] = useState('');
   const [error, setError] = useState(null);
 
-
   const checkLocationService = () => {
     Geolocation.getCurrentPosition(
       () => {
         // Location services are available, continue
         requestLocationPermission();
       },
-      (err) => {
+      err => {
         setError('Location services are not enabled');
-      }
+      },
     );
   };
   const requestLocationPermission = async () => {
     if (Platform.OS === 'ios') {
-      getLocation(); // iOS permissions handled automatically in Info.plist
+      getLocation();
     } else {
       // For Android, request location permission at runtime
       try {
@@ -82,7 +77,7 @@ const App = () => {
             buttonNeutral: 'Ask Me Later',
             buttonNegative: 'Cancel',
             buttonPositive: 'OK',
-          }
+          },
         );
 
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
@@ -98,12 +93,15 @@ const App = () => {
 
   const getLocation = () => {
     Geolocation.getCurrentPosition(
-      async (position) => {
+      async position => {
         setLocation(position.coords);
-        await getReverseGeocode(position.coords.latitude, position.coords.longitude);
+        await getReverseGeocode(
+          position.coords.latitude,
+          position.coords.longitude,
+        );
       },
-      (err) => setError('Error getting location: ' + err.message),
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      err => setError('Error getting location: ' + err.message),
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
   };
 
@@ -117,20 +115,19 @@ const App = () => {
             'User-Agent': 'YourAppName', // Use your app name
             'Accept-Language': 'en', // Specify language for results
           },
-        }
+        },
       );
       const data = await response.json();
-      
-      // Format address
-      const formattedAddress = [
-        data.address.road,
-        data.address.suburb,
-        data.address.city,
-        data.address.state,
-        data.address.country,
-      ]
-        .filter(Boolean)
-        .join(', ');
+      console.log('====================================');
+      console.log(data.address);
+      console.log('====================================');
+
+      const placeName = data.address?.tourism;
+      const road = data.address?.road;
+      const state_district = data.address?.state_district;
+      const state = data.address?.state;
+      const postcode = data.address?.postcode;
+      const formattedAddress = `${placeName}, ${road}, ${state},${state_district}, ${postcode}`;
 
       setAddress(formattedAddress);
     } catch (err) {
@@ -156,8 +153,6 @@ const App = () => {
     setUser(user);
     if (initializing) setInitializing(false);
   }
-
-
 
   if (initializing) return null;
 
@@ -203,11 +198,13 @@ const App = () => {
     }
   };
 
-  const SelectedComponent = MenuItems.find(item => item.id === isSelected)?.Component;
+  const SelectedComponent = MenuItems.find(
+    item => item.id === isSelected,
+  )?.Component;
 
   return (
     <ScrollView style={styles.container}>
-      <View >
+      <View>
         <View style={styles.header}>
           <TouchableOpacity >
             <Image
@@ -216,22 +213,33 @@ const App = () => {
             />
           </TouchableOpacity>
           <TouchableOpacity>
-  <Image 
-    source={{ uri: user?.photoURL || 'https://via.placeholder.com/150' }} 
-    style={{ width: 50, height: 50, borderRadius: 25 }} 
-  />
-</TouchableOpacity>
-
+            <Image
+              source={{
+                uri: user?.photoURL || 'https://via.placeholder.com/150',
+              }}
+              style={{width: 50, height: 50, borderRadius: 25}}
+            />
+          </TouchableOpacity>
         </View>
 
         {/* Greeting */}
-        <Text style={styles.greetingText}>{user.displayName?.toLowerCase().slice(0, 6)},</Text>
+        <Text style={styles.greetingText}>
+          {user.displayName?.toLowerCase().slice(0, 6)},
+        </Text>
 
         {address && (
-                <View style={styles.addressContainer}>
-                  <Text style={styles.greetingText}>{address}</Text>
-                </View>
-              )}
+          <View style={styles.addressContainer}>
+            <Ionicons
+              style={{marginTop: height * 0.02}}
+              name={'location'}
+              size={20}
+              color={'red'}
+            />
+            <Text numberOfLines={1} style={styles.locationText}>
+              {address}
+            </Text>
+          </View>
+        )}
 
         {/* Title */}
         <View style={styles.titleView}>
@@ -262,44 +270,44 @@ const App = () => {
             showsHorizontalScrollIndicator={false}
             renderItem={({item}) => (
               <View style={styles.posterContainer}>
-                <Image source={item.image} style={styles.posterImage} />
+                <Image  source={item.image} style={styles.posterImage} />
               </View>
             )}
           />
         </View>
 
         <View style={styles.container}>
-      <FlatList
-        data={MenuItems}
-        keyExtractor={item => item.id}
-        showsHorizontalScrollIndicator={false}
-        horizontal={true}
-        renderItem={({ item }) => (
-          <View style={{ padding: 10, }}>
-            <Text
-              onPress={() => handlePress(item.id)}
-              style={{
-                color: isSelected === item.id ? '#FA4A0C' : '#000',
-                fontFamily: 'Poppins-Regular',
-                width: width * 0.3,
-              }}>
-              {item.Dish}
-            </Text>
-            <View
-              style={{
-                backgroundColor: isSelected === item.id ? '#FA4A0C' : '#fff',
-                height: height * 0.002,
-                marginTop: height * 0.01,
-                marginBottom: height * 0.01,
-                width: width * 0.2,
-              }}></View>
-          </View>
-        )}
-      />
+          <FlatList
+            data={MenuItems}
+            keyExtractor={item => item.id}
+            showsHorizontalScrollIndicator={false}
+            horizontal={true}
+            renderItem={({item}) => (
+              <View style={{padding: 10}}>
+                <Text
+                  onPress={() => handlePress(item.id)}
+                  style={{
+                    color: isSelected === item.id ? '#FA4A0C' : '#000',
+                    fontFamily: 'Poppins-Regular',
+                    width: width * 0.3,
+                  }}>
+                  {item.Dish}
+                </Text>
+                <View
+                  style={{
+                    backgroundColor:
+                      isSelected === item.id ? '#FA4A0C' : '#fff',
+                    height: height * 0.002,
+                    marginTop: height * 0.01,
+                    marginBottom: height * 0.01,
+                    width: width * 0.2,
+                  }}></View>
+              </View>
+            )}
+          />
 
-      {SelectedComponent && <SelectedComponent />}
-    
-    </View>
+          {SelectedComponent && <SelectedComponent />}
+        </View>
       </View>
     </ScrollView>
   );
@@ -323,12 +331,13 @@ const styles = StyleSheet.create({
     fontSize: height * 0.02,
     fontWeight: 'bold',
     fontFamily: 'Poppins-Regular',
-    paddingHorizontal: width * 0.07,
+    paddingHorizontal: width * 0.05,
+    bottom: height * 0.01,
     color: '#000',
   },
   titleView: {
-    marginTop: height * 0.02,
-    paddingHorizontal: width * 0.07,
+    paddingHorizontal: width * 0.05,
+    bottom:height*0.02
   },
   title: {
     fontSize: height * 0.04,
@@ -347,7 +356,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     width: width * 0.9,
     marginLeft: width * 0.05,
-    marginTop: height * 0.03,
+
   },
   input: {
     flex: 1,
@@ -364,13 +373,22 @@ const styles = StyleSheet.create({
     marginTop: height * 0.02,
   },
   posterImage: {
-    width: width * 0.65,
+    width: width * 0.90,
     height: height * 0.2,
     borderRadius: 20,
-  },
-  tabContainer: {
-    marginTop: height * 0.02,
-    height: height * 0.5,
-  },
   
+  },
+  addressContainer: {
+    flexDirection: 'row',
+    marginLeft: height * 0.02,
+    alignItems: 'center',
+    bottom: height * 0.02,
+  },
+  locationText: {
+    fontSize: height * 0.02,
+    fontWeight: 'bold',
+    fontFamily: 'Poppins-Regular',
+    color: '#000',
+    marginTop: height * 0.02,
+  },
 });

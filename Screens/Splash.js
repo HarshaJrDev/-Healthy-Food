@@ -11,18 +11,19 @@ const SplashScreen = () => {
     }, [2000]);
     return () => clearTimeout(splashtimout);
   }, [navigation]);
-
-
   return (
-    <View style={{backgroundColor:"#10375E",flex: 1,}}>
-    
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-  <Text style={{ textAlign: 'center', color: '#FFA249', fontSize: 30, fontFamily: 'Sofia-Regular' }}>
- 
- #HealthyIndia
-  </Text>
-</View>
-
+    <View style={{backgroundColor: '#10375E', flex: 1}}>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Text
+          style={{
+            textAlign: 'center',
+            color: '#FFA249',
+            fontSize: 30,
+            fontFamily: 'Sofia-Regular',
+          }}>
+          #HealthyIndia
+        </Text>
+      </View>
     </View>
   );
 };

@@ -12,7 +12,7 @@ import Profile from '../Screens/Like';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import Tracking from '../Screens/History';
-import Orders from '../Screens/Profile';
+import Orders from '../Screens/Cart';
 import {useSelector} from 'react-redux';
 
 // Get screen dimensions
@@ -105,7 +105,6 @@ const TabRoot = () => {
           tabBarStyle: {
             display: isKeyboardVisible ? 'none' : 'flex',
             borderRadius: metrics.borderRadius,
-  
             height: metrics.tabBarHeight,
             bottom:height*0.001,
             width:width*1,
@@ -122,12 +121,16 @@ const TabRoot = () => {
         <Tab.Screen
           name="Orders"
           component={Orders}
-          options={{
-            tabBarBadge: cart.length > 0 ? cart.length : null, // Dynamically set badge count
-          }}
+          
         />
-        <Tab.Screen name="Tracking" component={Tracking} />
-        <Tab.Screen name="Profile" component={Profile} />
+        <Tab.Screen name="Tracking" component={Tracking} 
+        options={{
+          tabBarBadge: cart.length > 0 ? cart.length : null, // Dynamically set badge count
+        }} />
+        <Tab.Screen name="Profile" component={Profile}
+        options={{
+          tabBarBadge: cart.length > 0 ? cart.length : null, // Dynamically set badge count
+        }} />
       </Tab.Navigator>
     </KeyboardAvoidingView>
   );
