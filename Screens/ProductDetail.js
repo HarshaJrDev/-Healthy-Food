@@ -1,5 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Dimensions, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Dimensions,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../Redux/ProductSlice'; // Import the action
 
@@ -12,19 +21,31 @@ const ProductDetail = ({ route }) => {
   // Function to handle adding to cart
   const handleAddToCart = () => {
     dispatch(addToCart(product)); // Dispatch action with product payload
-    Alert.alert('Success', `${product.title} has been added to your cart!`);
+    Alert.alert('Success', `${product.item_title || 'Item'} has been added to your cart!`);
   };
 
   return (
     <ScrollView style={styles.container}>
       {/* Product Image */}
-      <Image source={product.image} style={styles.productImage} />
+      <Image
+      source={
+        product.Item_Image
+          ? { uri: product.Item_Image } // Use URI for dynamic images
+          : { uri: 'https://via.placeholder.com/150/FFB6C1/000000?text=Food+Placeholder' } // Fallback image
+      }
+      
+        style={styles.productImage}
+      />
       
       {/* Product Details */}
       <View style={styles.detailContainer}>
-        <Text style={styles.productTitle}>{product.title}</Text>
-        <Text style={styles.productPrice}>₹{product.price}</Text>
-        <Text style={styles.productDescription}>{product.description}</Text>
+        <Text style={styles.productTitle}>{product.item_title || 'Unknown Item'}</Text>
+        <Text style={styles.productPrice}>
+          ₹{product.item_price }
+        </Text>
+        <Text style={styles.productDescription}>
+          {product.item_Description || 'No description available.'}
+        </Text>
       </View>
 
       {/* Add to Cart Button */}
@@ -64,7 +85,7 @@ const styles = StyleSheet.create({
   productPrice: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#FA4A0C', // Vibrant red for price
+    color: '#FA4A0C',
     marginBottom: 12,
   },
   productDescription: {
@@ -74,7 +95,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   addToCartButton: {
-    backgroundColor: '#FA4A0C', // Vibrant red to match Zomato's theme
+    backgroundColor: '#FA4A0C',
     paddingVertical: height * 0.02,
     marginHorizontal: width * 0.1,
     borderRadius: 25,

@@ -52,38 +52,55 @@ const App = () => {
   const [address, setAddress] = useState('');
   const [error, setError] = useState(null);
 
-  const checkLocationService = () => {
-    Geolocation.getCurrentPosition(
-      () => {
-        // Location services are available, continue
-        requestLocationPermission();
-      },
-      err => {
-        setError('Location services are not enabled');
-      },
-    );
-  };
-  const requestLocationPermission = async () => {
+
+  useEffect(() => {
+
+
+    const checkLocationService = () => {
+      Geolocation.getCurrentPosition(
+        () => {
+          // Location services are available, continue
+          requestLocationPermission();
+        },
+        err => {
+          setError('Location services are not enabled');
+        },
+      );
+    };
+    
+    checkLocationService()
+  }, []);
+ 
+  const requestLocationPermission  = async () => {
+    if (location) return; // Skip if location is already fetched
+
     if (Platform.OS === 'ios') {
       getLocation();
     } else {
-      // For Android, request location permission at runtime
       try {
-        const granted = await PermissionsAndroid.request(
+        const hasPermission = await PermissionsAndroid.check(
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-          {
-            title: 'Location Permission',
-            message: 'This app needs access to your location',
-            buttonNeutral: 'Ask Me Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
-          },
         );
 
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        if (hasPermission) {
           getLocation();
         } else {
-          setError('Location permission denied');
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            {
+              title: 'Location Permission',
+              message: 'This app needs access to your location',
+              buttonNeutral: 'Ask Me Later',
+              buttonNegative: 'Cancel',
+              buttonPositive: 'OK',
+            },
+          );
+
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            getLocation();
+          } else {
+            setError('Location permission denied');
+          }
         }
       } catch (err) {
         setError('Error requesting location permission');
@@ -91,17 +108,20 @@ const App = () => {
     }
   };
 
+  
   const getLocation = () => {
     Geolocation.getCurrentPosition(
       async position => {
-        setLocation(position.coords);
-        await getReverseGeocode(
-          position.coords.latitude,
-          position.coords.longitude,
-        );
+        if (!location) { // Prevent multiple updates
+          setLocation(position.coords);
+          await getReverseGeocode(
+            position.coords.latitude,
+            position.coords.longitude,
+          );
+        }
       },
       err => setError('Error getting location: ' + err.message),
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
     );
   };
 
@@ -136,9 +156,7 @@ const App = () => {
   };
 
   // Request permission on mount
-  useEffect(() => {
-    checkLocationService(); // Ensure location service is enabled
-  }, []);
+
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount

@@ -1,20 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Cart = ({ navigation }) => {
+const Cart = ({navigation}) => {
   const handleSignOut = async () => {
     try {
-      // Sign out from Firebase
       await auth().signOut();
 
-      // Clear user token from AsyncStorage
       await AsyncStorage.removeItem('userToken');
 
       console.log('User signed out successfully');
 
-      // Navigate to the SignIn screen
       navigation.replace('Signin');
     } catch (error) {
       console.error('Error during sign out:', error);

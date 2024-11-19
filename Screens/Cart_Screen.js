@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -17,7 +17,7 @@ import {
   clearCart,
 } from '../Redux/ProductSlice';
 import EmptyCartScreen from '../Components/Empty_screen';
-import firestore, { firebase } from '@react-native-firebase/firestore';
+import firestore, {firebase} from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 const {width, height} = Dimensions.get('window');
@@ -27,42 +27,25 @@ const CartScreen = () => {
   const dispatch = useDispatch();
   console.log('Cart Data:', JSON.stringify(cart, null, 2));
 
+  const handleaddtocartdb = async () => {
+    try {
+      const user = auth().currentUser;
+      const uid = user.uid;
+      console.log(uid);
+      await firestore()
+        .collection('UsersDataBase')
+        .doc(uid)
+        .set({cart: cart}, {merge: true});
 
-
- 
-const handleaddtocartdb = async ()=>{
-
-  const user = auth().currentUser;
-  const uid = user.uid;
-  console.log(uid);
-
- 
-  try {
-
-    await firestore().collection('UsersDataBase').doc(uid).set(
-     { cart:cart},{merge:true}
-
-    )
-
-    console.log('Cart added successfully to the database.');
-    
-  } catch (error) {
-    
-    console.log(error,'is error while adding to cart');
-  }
-
-
-  useEffect(() => {
-    handleaddtocartdb
-    return () => {
-      
-    };
-  }, []);
-}
-
-
-  // Calculate subtotal, tax, and total
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      console.log('Cart added successfully to the database.');
+    } catch (error) {
+      console.log(error, 'is error while adding to cart');
+    }
+  };
+  const subtotal = cart.reduce(
+    (sum, item) => sum + item.item_price * item.quantity,
+    0,
+  );
   const tax = subtotal * 0.05; // 5% tax
   const deliveryCharge = 50; // Flat delivery charge
   const total = subtotal + tax + deliveryCharge;
@@ -88,10 +71,15 @@ const handleaddtocartdb = async ()=>{
 
   const renderItem = ({item}) => (
     <View style={styles.cartItem}>
-      <Image source={item.image} style={styles.productImage} />
+
+      
+      <Image source={item.Item_Image} style={styles.productImage} />
       <View style={styles.productDetails}>
-        <Text style={styles.productTitle}>{item.title}</Text>
-        <Text style={styles.productPrice}>₹{item.price}</Text>
+        <Text style={styles.productTitle}>{item.item_title}</Text>
+        <Text style={styles.productPrice}>₹{item.item_price}</Text>
+
+
+
         <View style={styles.quantityContainer}>
           <TouchableOpacity
             onPress={() => dispatch(decreaseProduct(item))}
@@ -125,15 +113,23 @@ const handleaddtocartdb = async ()=>{
             contentContainerStyle={styles.listContainer}
           />
           <View style={styles.billSection}>
-            <Text style={styles.billText}>Subtotal: ₹{subtotal.toFixed(2)}</Text>
+            <Text style={styles.billText}>
+              Subtotal: ₹{subtotal.toFixed(2)}
+            </Text>
             <Text style={styles.billText}>Tax (5%): ₹{tax.toFixed(2)}</Text>
-            <Text style={styles.billText}>Delivery Charges: ₹{deliveryCharge.toFixed(2)}</Text>
+            <Text style={styles.billText}>
+              Delivery Charges: ₹{deliveryCharge.toFixed(2)}
+            </Text>
             <Text style={styles.totalText}>Total: ₹{total.toFixed(2)}</Text>
           </View>
-          <TouchableOpacity style={styles.addressButton} onPress={handleAddress}>
+          <TouchableOpacity
+            style={styles.addressButton}
+            onPress={handleAddress}>
             <Text style={styles.addressText}>Select Address</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buyNowButton} onPress={handleaddtocartdb}>
+          <TouchableOpacity
+            style={styles.buyNowButton}
+            onPress={handleaddtocartdb}>
             <Text style={styles.buyNowText}>Buy Now</Text>
           </TouchableOpacity>
           <TouchableOpacity
