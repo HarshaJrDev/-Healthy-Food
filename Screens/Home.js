@@ -24,6 +24,7 @@ import Tea_Detox from '../Components/Tea_Detox';
 import Nuts_Laddu from '../Components/Nuts_Laddu';
 const Drawer = createDrawerNavigator();
 import Geolocation from '@react-native-community/geolocation';
+import firestore from '@react-native-firebase/firestore';
 
 const {width, height} = Dimensions.get('window');
 const addposter = [
@@ -154,6 +155,9 @@ const App = () => {
       setError('Error getting address: ' + err.message);
     }
   };
+
+
+ 
 
   // Request permission on mount
 

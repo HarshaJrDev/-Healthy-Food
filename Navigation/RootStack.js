@@ -28,6 +28,7 @@ import HomeScreen from '../Screens/Home';
 import ProfileScreen from '../Screens/Cart';
 import Tracking from '../Screens/History';
 import Orders from '../Screens/Cart_Screen';
+import Address from '../Screens/Address';
 
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -130,6 +131,7 @@ const AuthStack = () => (
     <Stack.Screen name="Onboarding" component={Onboarding} />
     <Stack.Screen name="Signin" component={Signin} />
     <Stack.Screen name="Signup" component={Signup} />
+    <Stack.Screen name="TabRoot" component={TabRoot} />
   </Stack.Navigator>
 );
 
@@ -162,6 +164,7 @@ const MainStack = () => (
     <Stack.Screen name="ProductDetail" component={ProductDetail} />
     <Stack.Screen name="TabRoot" component={TabRoot} />
     <Stack.Screen name="CartScreen" component={CartScreen} />
+    <Stack.Screen name="Address" component={Address} />
   </Stack.Navigator>
 );
 

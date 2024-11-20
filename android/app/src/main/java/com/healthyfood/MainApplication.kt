@@ -12,6 +12,7 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
 import com.oblador.vectoricons.VectorIconsPackage;
+import com.razorpay.rn.RazorpayPackage;
 
 class MainApplication : Application(), ReactApplication {
 
