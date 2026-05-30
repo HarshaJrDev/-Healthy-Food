@@ -33,20 +33,7 @@ const CartScreen = () => {
 
   const initiatePayment = () => {
     // Razorpay payment options
-    const options = {
-      description: 'Test Payment',
-      image: 'https://example.com/your_logo.png',
-      currency: 'INR', // Ensure the currency is correct
-      key: 'rzp_test_b0teA3IxQVsifq', // Replace with your Razorpay Key
-      amount: '1000', // Amount in paise (1000 = 10 INR)
-      name: '#HealthyIndia',
-      prefill: {
-        email: 'test@example.com',
-        contact: '9999999999',
-        name: 'Test User',
-      },
-      theme: {color: '#F37254'},
-    };
+
 
     // Open Razorpay Checkout
     RazorpayCheckout.open(options)
